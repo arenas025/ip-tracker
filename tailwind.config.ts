@@ -9,10 +9,12 @@ const config: Config = {
   theme: {
     extend: {
       backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+        "blue-image-desktop": "url('/pattern-bg-desktop.png')",
+        "blue-image-mobile": "url('/pattern-bg-mobile.png')",
       },
+    },
+    screens: {
+    'mobile1': { 'raw': '(min-height: 800px)' },
     },
   },
   plugins: [],
