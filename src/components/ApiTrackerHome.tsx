@@ -1,9 +1,10 @@
 "use client";
-import { useEffect, useState } from "react";
-
+import dynamic from "next/dynamic";
+import { useState } from "react";
+import { longLatInterface } from "./MapView";
 import { SearcherResult } from './SearcherResult';
-import  MapView, { longLatInterface }  from "./MapView";
-import { LatLngTuple } from "leaflet";
+const MapView = dynamic(() => import("../components/MapView"), { ssr: false });
+
 
 
 
@@ -23,7 +24,6 @@ const [longLat, setLongLat] = useState<longLatInterface>({
   lat:0,
   lng:0
 });
-
 
   return (
     <div className="flex h-screen flex-col w-screen items-center">

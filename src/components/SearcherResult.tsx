@@ -1,10 +1,11 @@
-import Image from 'next/image'
-import React, { Dispatch, SetStateAction, useState } from 'react'
+"use client"
+import Image from 'next/image';
+import { Dispatch, SetStateAction, useState } from 'react';
 import iconArrow from "../../public/icon-arrow.svg";
-import { InfoComponent } from './InfoComponent';
 import { infoInterface } from './ApiTrackerHome';
-import { LatLngTuple } from 'leaflet';
+import { InfoComponent } from './InfoComponent';
 import { longLatInterface } from './MapView';
+import { LoadingComponent } from './LoadingComponent';
 
 interface SearcherResultInterface {
   setSearchIP: Dispatch<SetStateAction<boolean>>;
@@ -25,6 +26,8 @@ interface IpInfo {
     region: string;
     timezone: string;
   };
+  code?:number
+  message?:string
 }
 
 
@@ -37,14 +40,19 @@ const [info, setInfo] = useState<infoInterface>({
   timezone: "",
 });
 
+
+
 const [ip, setIp] = useState<string>("")
+const [isLoading, setIsLoading] = useState<boolean>(false)
 
 const search = (ip:string) => {
+  setIsLoading(true)
   fetch(
     `https://geo.ipify.org/api/v2/country,city?apiKey=at_YFBJWhnlHRPEoXOfHcjtAkMtm3zyv&ipAddress=${ip}`
-  ).then(async (e:any)=>{
+  )
+  .then(async (e:any)=>{
+    setIsLoading(true)
     const response: IpInfo = await e.json()
-    console.log(response)
     setInfo({
       ipAddres:response.ip,
       location:response.location.city,
@@ -52,12 +60,20 @@ const search = (ip:string) => {
       timezone:response.location.timezone
     })
     setLongLat({lng:response.location.lng, lat:response.location.lat})
-  });
+  })
+  .catch((e) => {
+    if(e){
+      alert("The IP does not exist or is wrong")
+    }
+  })
+  .finally(()=>{
+    setIsLoading(false);
+  })
 }
 
 
   return (
-    <div className="flex flex-col w-80 z-30">
+    <div className="flex flex-col w-80 z-20">
       <div className="w-full border-solid h-14 flex items-center justify-center  ">
         <div className="w-[85%] flex rounded-l-lg h-full bg-white items-center justify-center">
           <input
@@ -84,6 +100,7 @@ const search = (ip:string) => {
         <InfoComponent title="TIMEZONE" info={info.timezone} />
         <InfoComponent title="ISP" info={info.isp} />
       </div>
+      {isLoading && <LoadingComponent/>}
     </div>
   );
 };
