@@ -15,6 +15,7 @@ const config: Config = {
     },
     screens: {
     'mobile1': { 'raw': '(min-height: 800px)' },
+    'lg':'1024px',
     },
   },
   plugins: [],

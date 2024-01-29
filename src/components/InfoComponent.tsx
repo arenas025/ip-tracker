@@ -1,9 +1,7 @@
+import { infoComponentInterface } from '@/utils/interfaces';
 import React from 'react'
 
-interface infoComponentInterface {
-  title:string,
-  info:string
-}
+
 
 export const InfoComponent = ({info,title}: infoComponentInterface) => {
   return (
